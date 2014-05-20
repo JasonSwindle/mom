@@ -65,4 +65,4 @@ ADD ./files/supervisor/ntpd.conf /etc/supervisor/conf.d/
 ## Remove the apt database
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-CMD ["/usr/local/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["/usr/local/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
