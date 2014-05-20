@@ -54,7 +54,7 @@ RUN service salt-master restart
 RUN mkdir /var/run/sshd
 
 ## Move SSH to a different port
-RUN sed 's/Port 22/Port 16022/' /etc/ssh/sshd_config
+RUN sed -i 's/Port 22/Port 16022/' /etc/ssh/sshd_config
 
 ## Make Salt-Master and SSHD a service
 ADD ./files/supervisor/supervisord.conf /etc/
