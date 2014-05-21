@@ -1,68 +1,56 @@
-## Used Ubuntu 12:04 vs 14:04 because of odd issues with --net and chpasswd
+FROM phusion/baseimage:0.9.10
 
-FROM ubuntu:12.04
+MAINTAINER github.com/jasonswindle
 
-MAINTAINER github.com/JasonSwindle
+# https://github.com/dotcloud/docker/issues/4846 and move SSH to a different port
+RUN sed -i 's/session    required     pam_loginuid.so/#session    required     pam_loginuid.so/' /etc/pam.d/sshd
 
-## Envs needed to make everthing work
-ENV DEBIAN_FRONTEND noninteractive
-ENV TERM linux
-
-## Ports for Salt and SSH
-EXPOSE 4505 4506 16022
-
-## Set root's password
+# Set root's password
 RUN echo "root:changeme" | chpasswd
 
-## Update the apt database
+# Set correct environment variables.
+ENV HOME /root
+
+# Update apt's cache
 RUN apt-get update
 
 ## Install what we need
 RUN apt-get install -y \
             python-pip \
-            ca-certificates \
             sudo \
-            openssh-server \
             software-properties-common \
-            python-software-properties \
-            vim \
             locales \
             ntp
 
-## Install Supervisor
-RUN mkdir /var/log/supervisor; pip install supervisor
+# Ensure UTF-8
+RUN locale-gen en_US.UTF-8 && update-locale
 
-## Set the timezone
-RUN echo "US/Central" > /etc/timezone; dpkg-reconfigure tzdata
-
-## Install Salt Master (of Masters)
+# Install Salt Master (of Masters)
 RUN add-apt-repository ppa:saltstack/salt
 
-## Update the apt database
+# Update the apt database
 RUN apt-get update
 
-## Install Salt Master
+# Install Salt Master
 RUN apt-get install -y salt-master
 
-## Make this Salt Master, Master of Masters
+# Make this Salt Master, Master of Masters
 RUN echo "order_masters: True" > /etc/salt/master.d/syndic.conf
 
-## Bounce the Salt Master
-RUN service salt-master restart
+# Set the timezone
+RUN echo "US/Central" > /etc/timezone; dpkg-reconfigure tzdata
 
-## Make the SSH dir
-RUN mkdir /var/run/sshd
+# Add runit scripts
+ADD ./files/runit/ /etc/service/
 
-## Move SSH to a different port
-RUN sed -i 's/Port 22/Port 16022/' /etc/ssh/sshd_config
+# Correct the perms, so RUNIT can run...
+RUN chmod 0755 -Rv /etc/service/
 
-## Make Salt-Master and SSHD a service
-ADD ./files/supervisor/supervisord.conf /etc/
-ADD ./files/supervisor/salt.conf /etc/supervisor/conf.d/
-ADD ./files/supervisor/ssh.conf /etc/supervisor/conf.d/
-ADD ./files/supervisor/ntpd.conf /etc/supervisor/conf.d/
+# SSH Config
+ADD ./files/ssh/sshd_config /etc/ssh/sshd_config
 
-## Remove the apt database
+# Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-CMD ["/usr/local/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
+# Use baseimage-docker's init system.
+CMD ["/sbin/my_init"]
