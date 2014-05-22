@@ -2,12 +2,12 @@
 
 ![image](./.gitmedia/mom.jpg)
 
-SaltStack Master of Masters (MoM) inside of Docker.  This is being heaving worked on, so here be dragons!
+SaltStack Master of Masters (MoM) inside of Docker.  This is being heavily worked on, so here be dragons!
 
 ## Status
 Status: Pre-Production
 
-## How it was build
+## How it was built
 * The docker image `phusion/baseimage` and the tag of `0.9.10`.
 * The password to root is `changeme`... CHANGE THIS ASAP!, you have been warned!
 * The SSH port is `16022`, to make it live with the host machaine's port 22.
@@ -37,8 +37,8 @@ docker run --interactive=true --tty=true --volume=/root/.pki:/etc/salt/pki:rw --
 ## To-Do
 
 * Clean up Dockerfile; more logic less layers.
-* Tighten up the RUNIT conf files.
+* Tighten up the RUNIT config files.
 * Fill out the README.md more.
-* Test heavly.
-* Replace Mom image with image I have he copyright to.
+* Test heavily.
+* Replace Mom image with image I have the copyright to.
 * Check into index.docker.io ?
