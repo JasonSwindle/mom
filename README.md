@@ -11,6 +11,7 @@ Status: Pre-Production
 * The docker image `phusion/baseimage` and the tag of `0.9.10`.
 * The password to root is `changeme`... CHANGE THIS ASAP!, you have been warned!
 * The SSH port is `16022`, to make it live with the host machaine's port 22.
+* The Private Keys from SaltStack are stored on the host in `/root/.pki/` via Docker's pass-through.
 
 # How to deploy Mom
 ```bash
