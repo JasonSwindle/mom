@@ -1,4 +1,4 @@
-# mom
+# SaltStack Mom (Master of Masters)
 
 ![image](./.gitmedia/mom.jpg)
 
