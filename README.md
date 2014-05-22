@@ -12,12 +12,12 @@ Status: Pre-Production
 * The password to root is `changeme`... CHANGE THIS ASAP!, you have been warned!
 * The SSH port is `16022`, to make it live with the host machaine's port 22.
 
-# How to deploy it Mom
+# How to deploy Mom
 ```bash
 git clone https://github.com/JasonSwindle/mom
 ```
 
-```
+```bash
 cd mom/
 ```
 
