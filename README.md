@@ -32,7 +32,7 @@ docker run -it -v /root/.pki:/etc/salt/pki:rw -p 4505:4505 -p 4506:4506 -p 9001:
 
 or for the people who don't run things with short flags....
 ```bash
-docker run --interactive=true --tty=true --volume=/root/.salt_pki:/etc/salt/pki:rw --publish=4505:4505 --publish=4506:4506 --publish=16022:16022 --hostname="mom" --detach=true mom:latest
+docker run --interactive=true --tty=true --volume=/root/.salt_pki:/etc/salt/pki:rw --volume=/opt/tools:/usr/bin/tools:ro --volume=/srv:/srv:ro --publish=4505:4505 --publish=4506:4506 --publish=9001:9001 --hostname="mom" --detach=true mom:latest
 ```
 
 ## To-Do
