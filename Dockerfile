@@ -17,6 +17,8 @@ RUN apt-get update
 ## Install what we need
 RUN apt-get install -y \
             python-pip \
+            man \
+            wget \
             sudo \
             software-properties-common \
             locales \
