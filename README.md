@@ -10,10 +10,13 @@ SaltStack Master of Masters (MOM) inside of Docker.  This is being heavily worke
 Status: Pre-Production
 
 ## How it was built
+
 * The docker image `phusion/baseimage` and the tag of `0.9.10`.
 * The password to root is `changeme`... CHANGE THIS ASAP!, you have been warned!
 * The SSH port is `9001`, to make it live with the host machaine's port 22.
-* The Private Keys from SaltStack are stored on the host in `/root/.salt_pki/` via Docker's pass-through.
+* The Private Keys from SaltStack are stored on the host in `/root/.salt_pki/` via Docker's Read/Write volume.
+* `/srv` on the host is mounted in `/srv` as Read-Only in the container.
+* `/opt/tools` on the host is mounted in `/usr/bin/tools/` as Read-Only in the container.
 
 ## How to deploy MOM
 
@@ -22,6 +25,7 @@ Status: Pre-Production
 ```bash
 git clone https://github.com/jasonswindle/mom
 ```
+
 ### Change directory into project
 
 ```bash
