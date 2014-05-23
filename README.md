@@ -1,9 +1,9 @@
-# SaltStack Mom (Master of Masters)
+# SaltStack MOM (Master of Masters)
 
 
 ![image](./.gitmedia/mom.jpg)
 
-SaltStack Master of Masters (MoM) inside of Docker.  This is being heavily worked on, so here be dragons!
+SaltStack Master of Masters (MOM) inside of Docker.  This is being heavily worked on, so here be dragons!
 
 ## Status
 
