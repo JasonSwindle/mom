@@ -36,7 +36,7 @@ cd mom/
 ### Build MOM
 
 ```bash
-docker build --rm --tag='mom' .
+docker build --rm --tag='mom_image' .
 ```
 
 ### Run MOM
@@ -53,8 +53,9 @@ docker run \
     --publish=4506:4506 \
     --publish=9001:9001 \
     --hostname="mom" \
+    --name="mom" \
     --detach=true \
-    mom:latest
+    mom_image:latest
 ```
 
 ## To-Do
