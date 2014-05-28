@@ -36,7 +36,7 @@ cd mom/
 ### Build MOM
 
 ```bash
-docker build --rm --tag='mom_image' .
+docker build --rm --tag='mom-image' .
 ```
 
 ### Run MOM
@@ -53,9 +53,9 @@ docker run \
     --publish=4506:4506 \
     --publish=9001:9001 \
     --hostname="mom" \
-    --name="mom" \
+    --name="mom-container" \
     --detach=true \
-    mom_image:latest
+    mom-image:latest
 ```
 
 ## To-Do
@@ -66,3 +66,4 @@ docker run \
 * Test heavily.
 * Replace Mom image with image I have the copyright to.
 * Check into index.docker.io ?
+* Add docs for upstart.
