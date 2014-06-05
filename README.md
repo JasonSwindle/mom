@@ -14,7 +14,7 @@ Status: Pre-Production
 * The docker image `phusion/baseimage` and the tag of `0.9.10`.
 * The password to root is `changeme`... CHANGE THIS ASAP!, you have been warned!
 * The SSH port is `9001`, to make it live with the host machaine's port 22.
-* The Private Keys from SaltStack are stored on the host in `/root/.salt_pki/` via Docker's Read/Write volume.
+* The Private Keys from SaltStack are stored on the host in `/root/.salt_pki/mom` via Docker's Read/Write volume.
 * The logs from MOM are storage on the host in `/var/log/docker/mom` as Read/Write in the container.
 * `/srv` on the host is mounted in `/srv` as Read/Write in the container.
 * `/opt/tools` on the host is mounted in `/usr/bin/tools/` as Read-Only in the container.
@@ -46,7 +46,7 @@ docker run \
     --interactive=true \
     --tty=true \
     --volume=/var/log/docker/mom:/var/log:rw \
-    --volume=/root/.salt_pki:/etc/salt/pki:rw \
+    --volume=/root/.salt_pki/mom:/etc/salt/pki:rw \
     --volume=/srv:/srv:rw \
     --volume=/opt/tools:/usr/bin/tools:ro \
     --publish=4505:4505 \
