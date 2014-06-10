@@ -43,8 +43,6 @@ docker build --rm --tag='mom-image' .
 
 ```bash
 docker run \
-    --interactive=true \
-    --tty=true \
     --volume=/var/log/docker/mom:/var/log:rw \
     --volume=/root/.salt-pki/mom:/etc/salt/pki:rw \
     --volume=/srv:/srv:rw \
