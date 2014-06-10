@@ -18,6 +18,7 @@ Status: Pre-Production
 * The logs from MOM are storage on the host in `/var/log/docker/mom` as Read/Write in the container.
 * `/srv` on the host is mounted in `/srv` as Read/Write in the container.
 * `/opt/tools` on the host is mounted in `/usr/bin/tools/` as Read-Only in the container.
+* Don't forget to change your timezone, unless you want US Central time.
 
 ## How to deploy MOM
 
