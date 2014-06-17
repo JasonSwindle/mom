@@ -2,30 +2,38 @@ FROM phusion/baseimage:0.9.10
 
 MAINTAINER github.com/jasonswindle
 
-# https://github.com/dotcloud/docker/issues/4846 and move SSH to a different port
-RUN sed -i 's/session    required     pam_loginuid.so/#session    required     pam_loginuid.so/' /etc/pam.d/sshd
+# Set correct environment variables.
+ENV HOME /root
 
 # Set root's password
 RUN echo "root:changeme" | chpasswd
 
-# Set correct environment variables.
-ENV HOME /root
+# Add the user rsync, touch the authorized_keys file, chown
+RUN useradd rsync_user --create-home
+RUN touch /home/rsync_user/.ssh/authorized_keys
+RUN chown rsync_user:rsync_user -R /home/rsync_user/.ssh \
+            && chmod 0700 /home/rsync_user/.ssh \
+            && chmod 0644 /home/rsync_user/.ssh/authorized_keys
 
 # Update apt's cache
 RUN apt-get update
 
 ## Install what we need
-RUN apt-get install -y \
+RUN apt-get install -y -q --no-install-recommends \
             python-pip \
             man \
             wget \
             sudo \
             software-properties-common \
             locales \
+            ca-certificates \
             ntp
 
 # Ensure UTF-8
 RUN locale-gen en_US.UTF-8 && update-locale
+
+# Set the timezone
+RUN echo "US/Central" > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
 
 # Install Salt Master (of Masters)
 RUN add-apt-repository ppa:saltstack/salt
@@ -34,13 +42,11 @@ RUN add-apt-repository ppa:saltstack/salt
 RUN apt-get update
 
 # Install Salt Master
-RUN apt-get install -y salt-master
+RUN apt-get install -y -q --no-install-recommends \
+            salt-master
 
 # Make this Salt Master, Master of Masters
 RUN echo "order_masters: True" > /etc/salt/master.d/syndic.conf
-
-# Set the timezone
-RUN echo "US/Central" > /etc/timezone; dpkg-reconfigure tzdata
 
 # Add runit scripts
 ADD ./files/runit/ /etc/service/
@@ -49,10 +55,7 @@ ADD ./files/runit/ /etc/service/
 RUN chmod 0755 -Rv /etc/service/
 
 # SSH Config
-ADD ./files/ssh/sshd_config /etc/ssh/sshd_config
-
-# Clean up APT when done.
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+ADD ./files/ssh/sshd_config /etc/ssh/
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
