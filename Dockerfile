@@ -10,7 +10,7 @@ RUN echo "root:changeme" | chpasswd
 
 # Add the user rsync, touch the authorized_keys file, chown
 RUN useradd rsync_user --create-home
-RUN touch /home/rsync_user/.ssh/authorized_keys
+ADD ./files/rsync_user/authorized_keys /home/rsync_user/.ssh/
 RUN chown rsync_user:rsync_user -R /home/rsync_user/.ssh \
             && chmod 0700 /home/rsync_user/.ssh \
             && chmod 0644 /home/rsync_user/.ssh/authorized_keys
