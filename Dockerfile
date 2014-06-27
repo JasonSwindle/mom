@@ -1,4 +1,4 @@
-FROM phusion/baseimage:0.9.10
+FROM phusion/baseimage:0.9.11
 
 MAINTAINER github.com/jasonswindle
 
@@ -7,6 +7,9 @@ ENV HOME /root
 
 # Set root's password
 RUN echo "root:changeme" | chpasswd
+
+# Stop daemon from starting on install
+RUN echo 'exit 101' >> /usr/sbin/policy-rc.d
 
 # Add the user rsync, touch the authorized_keys file, chown
 RUN useradd rsync_user --create-home
@@ -19,14 +22,12 @@ RUN chown rsync_user:rsync_user -R /home/rsync_user/.ssh \
 RUN apt-get update
 
 ## Install what we need
-RUN apt-get install -y -q --no-install-recommends \
+RUN apt-get install --yes -qq --no-install-recommends \
             python-pip \
             man \
             wget \
             sudo \
-            software-properties-common \
             locales \
-            ca-certificates \
             ntp
 
 # Ensure UTF-8
@@ -42,7 +43,7 @@ RUN add-apt-repository ppa:saltstack/salt
 RUN apt-get update
 
 # Install Salt Master
-RUN apt-get install -y -q --no-install-recommends \
+RUN apt-get install --yes -qq --no-install-recommends \
             salt-master
 
 # Make this Salt Master, Master of Masters
