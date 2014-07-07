@@ -19,10 +19,10 @@ RUN chown rsync_user:rsync_user -R /home/rsync_user/.ssh \
             && chmod 0644 /home/rsync_user/.ssh/authorized_keys
 
 # Update apt's cache
-RUN apt-get update
+RUN apt-get update -qq
 
 ## Install what we need
-RUN apt-get install --yes -qq --no-install-recommends \
+RUN DEBIAN_FRONTEND=noninteractive apt-get install --yes -qq --no-install-recommends \
             python-pip \
             man \
             wget \
@@ -40,10 +40,10 @@ RUN echo "US/Central" > /etc/timezone && dpkg-reconfigure --frontend noninteract
 RUN add-apt-repository ppa:saltstack/salt
 
 # Update the apt database
-RUN apt-get update
+RUN apt-get update -qq
 
 # Install Salt Master
-RUN apt-get install --yes -qq --no-install-recommends \
+RUN DEBIAN_FRONTEND=noninteractive apt-get install --yes -qq --no-install-recommends \
             salt-master
 
 # Make this Salt Master, Master of Masters
